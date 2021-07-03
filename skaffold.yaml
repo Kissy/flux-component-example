@@ -1,0 +1,18 @@
+apiVersion: skaffold/v2beta17
+kind: Config
+deploy:
+  kubeContext: kind-kind
+  kustomize:
+    paths:
+      - ./kind/
+profiles:
+  - name: test
+    deploy:
+      kustomize:
+        paths:
+          - ./test/
+  - name: prod
+    deploy:
+      kustomize:
+        paths:
+          - ./prod/
