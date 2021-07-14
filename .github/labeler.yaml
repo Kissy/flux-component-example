@@ -1,0 +1,12 @@
+area/test:
+  - e2e/*
+area/source:
+  - base/*
+env/kind:
+  - kind/*
+env/lab:
+  - lab/*
+env/test:
+  - test/*
+env/prod:
+  - prod/*

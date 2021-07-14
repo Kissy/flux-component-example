@@ -1,20 +1,17 @@
-name: unit
+name: build
 on: [push, pull_request]
 jobs:
   kustomize:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cluster: [ "kind", "test", "prod" ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install Kubernetes tools
+      - name: Run Kustomize
         uses: stefanprodan/kube-tools@v1.5.0
         with:
-          kubectl: 1.18.2
           kustomize: 3.5.5
-          helm: 2.16.7
-          helmv3: 3.2.1
-          kubeseal: 0.12.5
-          kubeval: v0.16.1
-          kubeaudit: 0.11.5
-      - name: Run Kustomize
-        run: kustomize build ./kind
+          command: |
+            kustomize build ./${{ matrix.cluster }}/ --output ./build.${{ matrix.cluster }}.yaml

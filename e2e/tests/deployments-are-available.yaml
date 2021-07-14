@@ -1,0 +1,23 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: deployments-are-available
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: cert-manager-deployments
+    match:
+      resources:
+        kinds:
+        - Deployment
+        selector:
+          matchLabels:
+            app.kubernetes.io/instance: cert-manager
+    validate:
+      message: "Deployment is not available"
+      pattern:
+        status:
+          availableReplicas: 1
+          ^(conditions):
+            - type: Available
+              status: 'True'
